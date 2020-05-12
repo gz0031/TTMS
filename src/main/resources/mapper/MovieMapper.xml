@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xupt.se.ttms.dao.MovieMapper" >
+  <resultMap id="BaseResultMap" type="xupt.se.ttms.bean.Movie" >
+    <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+    <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+    <result column="movie_image" property="movieImage" jdbcType="VARCHAR" />
+    <result column="movie_type" property="movieType" jdbcType="VARCHAR" />
+    <result column="movie_start_time" property="movieStartTime" jdbcType="TIMESTAMP" />
+    <result column="movie_end_time" property="movieEndTime" jdbcType="TIMESTAMP" />
+    <result column="movie_sale" property="movieSale" jdbcType="DECIMAL" />
+    <result column="movie_price" property="moviePrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="xupt.se.ttms.bean.Movie" extends="BaseResultMap" >
+    <result column="movie_introduction" property="movieIntroduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    movie_id, movie_name, movie_image, movie_type, movie_start_time, movie_end_time, 
+    movie_sale, movie_price
+  </sql>
+  <sql id="Blob_Column_List" >
+    movie_introduction
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="xupt.se.ttms.bean.MovieExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_movie
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xupt.se.ttms.bean.MovieExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_movie
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_movie
+    where movie_id = #{movieId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_movie
+    where movie_id = #{movieId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="xupt.se.ttms.bean.MovieExample" >
+    delete from t_movie
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xupt.se.ttms.bean.Movie" >
+    insert into t_movie (movie_id, movie_name, movie_image, 
+      movie_type, movie_start_time, movie_end_time, 
+      movie_sale, movie_price, movie_introduction
+      )
+    values (#{movieId,jdbcType=INTEGER}, #{movieName,jdbcType=VARCHAR}, #{movieImage,jdbcType=VARCHAR}, 
+      #{movieType,jdbcType=VARCHAR}, #{movieStartTime,jdbcType=TIMESTAMP}, #{movieEndTime,jdbcType=TIMESTAMP}, 
+      #{movieSale,jdbcType=DECIMAL}, #{moviePrice,jdbcType=DECIMAL}, #{movieIntroduction,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="xupt.se.ttms.bean.Movie" >
+    insert into t_movie
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="movieId != null" >
+        movie_id,
+      </if>
+      <if test="movieName != null" >
+        movie_name,
+      </if>
+      <if test="movieImage != null" >
+        movie_image,
+      </if>
+      <if test="movieType != null" >
+        movie_type,
+      </if>
+      <if test="movieStartTime != null" >
+        movie_start_time,
+      </if>
+      <if test="movieEndTime != null" >
+        movie_end_time,
+      </if>
+      <if test="movieSale != null" >
+        movie_sale,
+      </if>
+      <if test="moviePrice != null" >
+        movie_price,
+      </if>
+      <if test="movieIntroduction != null" >
+        movie_introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="movieId != null" >
+        #{movieId,jdbcType=INTEGER},
+      </if>
+      <if test="movieName != null" >
+        #{movieName,jdbcType=VARCHAR},
+      </if>
+      <if test="movieImage != null" >
+        #{movieImage,jdbcType=VARCHAR},
+      </if>
+      <if test="movieType != null" >
+        #{movieType,jdbcType=VARCHAR},
+      </if>
+      <if test="movieStartTime != null" >
+        #{movieStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="movieEndTime != null" >
+        #{movieEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="movieSale != null" >
+        #{movieSale,jdbcType=DECIMAL},
+      </if>
+      <if test="moviePrice != null" >
+        #{moviePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="movieIntroduction != null" >
+        #{movieIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="xupt.se.ttms.bean.MovieExample" resultType="java.lang.Integer" >
+    select count(*) from t_movie
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_movie
+    <set >
+      <if test="record.movieId != null" >
+        movie_id = #{record.movieId,jdbcType=INTEGER},
+      </if>
+      <if test="record.movieName != null" >
+        movie_name = #{record.movieName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.movieImage != null" >
+        movie_image = #{record.movieImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.movieType != null" >
+        movie_type = #{record.movieType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.movieStartTime != null" >
+        movie_start_time = #{record.movieStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.movieEndTime != null" >
+        movie_end_time = #{record.movieEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.movieSale != null" >
+        movie_sale = #{record.movieSale,jdbcType=DECIMAL},
+      </if>
+      <if test="record.moviePrice != null" >
+        movie_price = #{record.moviePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.movieIntroduction != null" >
+        movie_introduction = #{record.movieIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_movie
+    set movie_id = #{record.movieId,jdbcType=INTEGER},
+      movie_name = #{record.movieName,jdbcType=VARCHAR},
+      movie_image = #{record.movieImage,jdbcType=VARCHAR},
+      movie_type = #{record.movieType,jdbcType=VARCHAR},
+      movie_start_time = #{record.movieStartTime,jdbcType=TIMESTAMP},
+      movie_end_time = #{record.movieEndTime,jdbcType=TIMESTAMP},
+      movie_sale = #{record.movieSale,jdbcType=DECIMAL},
+      movie_price = #{record.moviePrice,jdbcType=DECIMAL},
+      movie_introduction = #{record.movieIntroduction,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_movie
+    set movie_id = #{record.movieId,jdbcType=INTEGER},
+      movie_name = #{record.movieName,jdbcType=VARCHAR},
+      movie_image = #{record.movieImage,jdbcType=VARCHAR},
+      movie_type = #{record.movieType,jdbcType=VARCHAR},
+      movie_start_time = #{record.movieStartTime,jdbcType=TIMESTAMP},
+      movie_end_time = #{record.movieEndTime,jdbcType=TIMESTAMP},
+      movie_sale = #{record.movieSale,jdbcType=DECIMAL},
+      movie_price = #{record.moviePrice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xupt.se.ttms.bean.Movie" >
+    update t_movie
+    <set >
+      <if test="movieName != null" >
+        movie_name = #{movieName,jdbcType=VARCHAR},
+      </if>
+      <if test="movieImage != null" >
+        movie_image = #{movieImage,jdbcType=VARCHAR},
+      </if>
+      <if test="movieType != null" >
+        movie_type = #{movieType,jdbcType=VARCHAR},
+      </if>
+      <if test="movieStartTime != null" >
+        movie_start_time = #{movieStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="movieEndTime != null" >
+        movie_end_time = #{movieEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="movieSale != null" >
+        movie_sale = #{movieSale,jdbcType=DECIMAL},
+      </if>
+      <if test="moviePrice != null" >
+        movie_price = #{moviePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="movieIntroduction != null" >
+        movie_introduction = #{movieIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where movie_id = #{movieId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xupt.se.ttms.bean.Movie" >
+    update t_movie
+    set movie_name = #{movieName,jdbcType=VARCHAR},
+      movie_image = #{movieImage,jdbcType=VARCHAR},
+      movie_type = #{movieType,jdbcType=VARCHAR},
+      movie_start_time = #{movieStartTime,jdbcType=TIMESTAMP},
+      movie_end_time = #{movieEndTime,jdbcType=TIMESTAMP},
+      movie_sale = #{movieSale,jdbcType=DECIMAL},
+      movie_price = #{moviePrice,jdbcType=DECIMAL},
+      movie_introduction = #{movieIntroduction,jdbcType=LONGVARCHAR}
+    where movie_id = #{movieId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xupt.se.ttms.bean.Movie" >
+    update t_movie
+    set movie_name = #{movieName,jdbcType=VARCHAR},
+      movie_image = #{movieImage,jdbcType=VARCHAR},
+      movie_type = #{movieType,jdbcType=VARCHAR},
+      movie_start_time = #{movieStartTime,jdbcType=TIMESTAMP},
+      movie_end_time = #{movieEndTime,jdbcType=TIMESTAMP},
+      movie_sale = #{movieSale,jdbcType=DECIMAL},
+      movie_price = #{moviePrice,jdbcType=DECIMAL}
+    where movie_id = #{movieId,jdbcType=INTEGER}
+  </update>
+</mapper>

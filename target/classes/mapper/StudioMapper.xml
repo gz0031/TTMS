@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xupt.se.ttms.dao.StudioMapper" >
+  <resultMap id="BaseResultMap" type="xupt.se.ttms.bean.Studio" >
+    <id column="studio_id" property="studioId" jdbcType="INTEGER" />
+    <result column="studio_name" property="studioName" jdbcType="VARCHAR" />
+    <result column="rowCount" property="rowcount" jdbcType="INTEGER" />
+    <result column="colCount" property="colcount" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="xupt.se.ttms.bean.Studio" extends="BaseResultMap" >
+    <result column="studio_introduction" property="studioIntroduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    studio_id, studio_name, rowCount, colCount
+  </sql>
+  <sql id="Blob_Column_List" >
+    studio_introduction
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="xupt.se.ttms.bean.StudioExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_studio
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="xupt.se.ttms.bean.StudioExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_studio
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_studio
+    where studio_id = #{studioId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_studio
+    where studio_id = #{studioId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="xupt.se.ttms.bean.StudioExample" >
+    delete from t_studio
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="xupt.se.ttms.bean.Studio" >
+    insert into t_studio (studio_id, studio_name, rowCount, 
+      colCount, studio_introduction)
+    values (#{studioId,jdbcType=INTEGER}, #{studioName,jdbcType=VARCHAR}, #{rowcount,jdbcType=INTEGER}, 
+      #{colcount,jdbcType=INTEGER}, #{studioIntroduction,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="xupt.se.ttms.bean.Studio" >
+    insert into t_studio
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="studioId != null" >
+        studio_id,
+      </if>
+      <if test="studioName != null" >
+        studio_name,
+      </if>
+      <if test="rowcount != null" >
+        rowCount,
+      </if>
+      <if test="colcount != null" >
+        colCount,
+      </if>
+      <if test="studioIntroduction != null" >
+        studio_introduction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="studioId != null" >
+        #{studioId,jdbcType=INTEGER},
+      </if>
+      <if test="studioName != null" >
+        #{studioName,jdbcType=VARCHAR},
+      </if>
+      <if test="rowcount != null" >
+        #{rowcount,jdbcType=INTEGER},
+      </if>
+      <if test="colcount != null" >
+        #{colcount,jdbcType=INTEGER},
+      </if>
+      <if test="studioIntroduction != null" >
+        #{studioIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="xupt.se.ttms.bean.StudioExample" resultType="java.lang.Integer" >
+    select count(*) from t_studio
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_studio
+    <set >
+      <if test="record.studioId != null" >
+        studio_id = #{record.studioId,jdbcType=INTEGER},
+      </if>
+      <if test="record.studioName != null" >
+        studio_name = #{record.studioName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rowcount != null" >
+        rowCount = #{record.rowcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.colcount != null" >
+        colCount = #{record.colcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.studioIntroduction != null" >
+        studio_introduction = #{record.studioIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update t_studio
+    set studio_id = #{record.studioId,jdbcType=INTEGER},
+      studio_name = #{record.studioName,jdbcType=VARCHAR},
+      rowCount = #{record.rowcount,jdbcType=INTEGER},
+      colCount = #{record.colcount,jdbcType=INTEGER},
+      studio_introduction = #{record.studioIntroduction,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_studio
+    set studio_id = #{record.studioId,jdbcType=INTEGER},
+      studio_name = #{record.studioName,jdbcType=VARCHAR},
+      rowCount = #{record.rowcount,jdbcType=INTEGER},
+      colCount = #{record.colcount,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="xupt.se.ttms.bean.Studio" >
+    update t_studio
+    <set >
+      <if test="studioName != null" >
+        studio_name = #{studioName,jdbcType=VARCHAR},
+      </if>
+      <if test="rowcount != null" >
+        rowCount = #{rowcount,jdbcType=INTEGER},
+      </if>
+      <if test="colcount != null" >
+        colCount = #{colcount,jdbcType=INTEGER},
+      </if>
+      <if test="studioIntroduction != null" >
+        studio_introduction = #{studioIntroduction,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where studio_id = #{studioId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="xupt.se.ttms.bean.Studio" >
+    update t_studio
+    set studio_name = #{studioName,jdbcType=VARCHAR},
+      rowCount = #{rowcount,jdbcType=INTEGER},
+      colCount = #{colcount,jdbcType=INTEGER},
+      studio_introduction = #{studioIntroduction,jdbcType=LONGVARCHAR}
+    where studio_id = #{studioId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="xupt.se.ttms.bean.Studio" >
+    update t_studio
+    set studio_name = #{studioName,jdbcType=VARCHAR},
+      rowCount = #{rowcount,jdbcType=INTEGER},
+      colCount = #{colcount,jdbcType=INTEGER}
+    where studio_id = #{studioId,jdbcType=INTEGER}
+  </update>
+</mapper>
